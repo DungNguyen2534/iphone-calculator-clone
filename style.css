@@ -106,7 +106,7 @@
   color: orange;
 }
 
-@media (max-width: 400px) {
+@media (max-width: 380px) {
   .calculator {
     position: fixed;
     top: 50%;
