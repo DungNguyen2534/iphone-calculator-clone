@@ -19,8 +19,7 @@
   display: grid;
   align-items: center;
   justify-items: center;
-  grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
-  gap: 5px;
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
 }
 
 .screen {
