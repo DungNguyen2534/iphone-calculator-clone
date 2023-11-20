@@ -28,6 +28,7 @@
   justify-content: flex-end;
   align-items: flex-end;
   overflow: hidden;
+  height: 100px;
   padding-left: 20px;
   padding-right: 20px;
   grid-column: span 4;
