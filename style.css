@@ -19,7 +19,7 @@
   display: grid;
   align-items: center;
   justify-items: center;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
   gap: 5px;
 }
 
@@ -28,11 +28,11 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-end;
+  overflow: hidden;
   padding-left: 20px;
   padding-right: 20px;
   grid-column: span 4;
   width: 100%;
-  height: 100px;
   color: white;
   font-weight: lighter;
   font-size: 7.6rem;
@@ -58,10 +58,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  min-width: 0;
   padding: 10px;
   grid-column: span 1;
-  width: 95%;
-  height: 95%;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   font-size: 2.8rem;
   color: white;
