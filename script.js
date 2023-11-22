@@ -18,9 +18,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
   numberButtons.forEach((button) => {
     button.addEventListener("click", function () {
-      if (currentOperand === "0" || performOperation) {
+      if (button.innerText === "." && !numberPressed) {
+        if (currentOperand.includes(",")) {
+          return;
+        }
+        currentOperand += "0.";
+        numberPressed = true;
+        decimalPressed = true;
+      } else if (button.innerText === "0" && !numberPressed) {
+        return;
+      } else if (currentOperand === "0" || performOperation) {
         currentOperand = button.innerText;
         performOperation = false;
+        numberPressed = true;
       } else {
         if (button.innerText === "." && decimalPressed) {
           return;
@@ -45,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   operationButtons.forEach((button) => {
     button.addEventListener("click", function () {
-      if (!numberPressed) {
+      if (!numberPressed && currentOperand !== "") {
         currentOperand = "0";
       }
       numberPressed = false;
@@ -70,8 +80,18 @@ document.addEventListener("DOMContentLoaded", function () {
   // Xử lý sự kiện khi click vào nút %
   percentButton.addEventListener("click", function () {
     calculatePercentage();
-    screen.classList.add("small-textp");
     enableNumberButtons();
+    if (currentOperand.length > 7 && currentOperand.length <= 8) {
+      screen.classList.add("small-text1");
+    } else if (currentOperand.length > 8 && currentOperand.length <= 9) {
+      screen.classList.remove("small-text1");
+      screen.classList.add("small-text2");
+      disableNumberButtons();
+    } else if (currentOperand.length == 1) {
+      enableNumberButtons();
+      screen.classList.remove("small-text1");
+      screen.classList.remove("small-text2");
+    }
   });
 
   function updateScreen() {
@@ -138,6 +158,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // Làm tròn kết quả đến số chữ số thập phân cần thiết
+
       const decimalPlaces = getDecimalPlaces(currentOperand);
       currentOperand = formatResult(currentOperand, Math.min(4, decimalPlaces));
       currentOperand = removeTrailingZeros(currentOperand);
@@ -220,13 +241,17 @@ document.addEventListener("DOMContentLoaded", function () {
       const absoluteValue = Math.abs(currentNumber);
       const numDigits = Math.floor(Math.log10(absoluteValue)) + 1;
 
-      if (numDigits > 6) {
+      const decimalPlaces = getDecimalPlaces(currentOperand);
+      const totalDisplayDigits =
+        numDigits + (decimalPressed ? decimalPlaces + 0 : decimalPlaces);
+
+      if (totalDisplayDigits > 6) {
         screen.classList.add("small-text1");
       }
-      if (numDigits > 7) {
+      if (totalDisplayDigits > 7) {
         screen.classList.add("small-text2");
       }
-      if (numDigits >= maxDisplayDigits) {
+      if (totalDisplayDigits >= maxDisplayDigits) {
         screen.classList.add("small-text");
         disableNumberButtons();
       } else {
@@ -283,7 +308,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function formatNumberWithCommas(numberString) {
     const parts = numberString.toString().split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    return parts.join(".");
+    return parts.join(",");
   }
 
   function updateScreenFormatted() {
